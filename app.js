@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 
+// Required modules
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -11,11 +12,14 @@ var expressSession = require('express-session');
 var flash = require('connect-flash');
 var connectMongo = require('connect-mongo');
 
+// Load our routes
 var config = require('./config');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var home = require('./routes/home');
+var api = require('./routes/api');
 
+// Set up our mongo store
 var MongoStore = connectMongo(expressSession);
 
 var passportConfig = require('./auth/passport-config');
@@ -28,6 +32,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+// Handlebars for the win
 app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 
@@ -37,6 +42,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Set up the Express Session data for holding
+// sessions in mongodb to allow easy persistence.
 app.use(expressSession(
     {
         secret: 'wouldnt you like to know',
@@ -48,14 +55,18 @@ app.use(expressSession(
     }
 ));
 
+// Set up flash and passport
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', routes);
 app.use('/users', users);
+
+// Everything below the "restrict" will require login
 app.use(restrict);
 app.use('/home', home);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

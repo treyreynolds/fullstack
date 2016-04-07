@@ -1,3 +1,7 @@
+/*
+ * APP
+ * Our central container.
+ */
 'use strict';
 
 angular.module('app', ['ngRoute', 'highcharts-ng'])

@@ -1,3 +1,7 @@
+/*
+ * KMEANS
+ * The collection of controllers and functions for processing kMeans and HighCharts
+ */
 (function(){
   'use strict';
 
@@ -7,16 +11,28 @@
 
   KmeansController.$inject = ['api','highchartsNG'];
 
+  /**
+   * Kmeans Angular Controller
+   *
+   * @method     KmeansController
+   * @param      service  api           custom api-service
+   * @param      directive  highchartsNG  highchartsNG
+   */
   function KmeansController(api,highchartsNG){
 
     var vm = this;
 
-    vm.sampleSize = 50;
+    // Sample Size refers to the student population size, clusters to how many
+    // clusters we are going to create of the data.
+    vm.sampleSize = 200;
     vm.clusters = 4;
+
+    // Start off with processed false to allow us to not show the screen.
     vm.processed = false;
     vm.unclusteredConfig = defaultChartOptions();
     vm.clusteredConfig = defaultChartOptions();
 
+    // Call the API and update the data objects accordingly
     vm.updateData = function() {
       api.getKMeansData(vm.sampleSize, vm.clusters)
       .then(function(data){
@@ -27,13 +43,17 @@
     }
   }
 
+  /**
+   * Returns the default chart options for HighCharts
+   *
+   * @method     defaultChartOptions
+   */
   function defaultChartOptions(){
-    //This is not a highcharts object. It just looks a little like one!
+    // High Charts NG Configuration
     var chartConfig = {
 
+      // Anything valid in the High Charts config object is valid here.
       options: {
-          //This is the Main Highcharts chart config. Any Highchart options are valid here.
-          //will be overriden by values specified below.
           chart: {
               type: 'scatter',
               zoomType: 'xy'
@@ -74,9 +94,8 @@
             }
         }
       },
-      //The below properties are watched separately for changes.
 
-      //Title configuration (optional)
+      //Title
       title: {
          text: 'Student GPA versus Engagement'
       },
@@ -90,15 +109,10 @@
         endOnTick: true,
         showLastLabel: true
       },
-      //Whether to use Highstocks instead of Highcharts (optional). Defaults to false.
-      useHighStocks: false,
-      //size (optional) if left out the chart will default to size of the div or something sensible.
+
+      //size, width defaults to the width of the container
       size: {
-       height: 500
-      },
-      //function (optional)
-      func: function (chart) {
-       //setup some logic for the chart
+       height: 400
       }
     };
     return chartConfig;

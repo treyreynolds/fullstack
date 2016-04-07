@@ -1,3 +1,7 @@
+/*
+ * ROUTES
+ * Routing the routes to the routes that the routes need to be
+ */
 (function() {
   'use strict';
 

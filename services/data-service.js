@@ -1,10 +1,23 @@
+/**
+ * Generates data for the kMeans clustering algo
+ *
+ * @method     createData
+ * @param      {number}  sampleSize population size
+ * @return     {Array}   random data
+ */
 exports.createData = function(sampleSize) {
   var data = [];
+
+  // Generate the points
   for(i = 0; i < sampleSize; i++){
     // Engagement
     var e = Math.random() * 10;
     var gpa = (Math.random() * 4);
     var m = 1;
+
+    // We create a modifier that randomly pushes scores down
+    // for lower engagement. This makes the data a little closer
+    // to reality.
     switch(Math.floor(e)){
       case 0:
         m = (Math.random() * -2) - 1;
@@ -36,19 +49,29 @@ exports.createData = function(sampleSize) {
         m = ((Math.random() * 10)/5);
     }
 
+    // Add the modifier to the GPA for life-likeness
     gpa = Math.round((gpa + m) * 10) / 10;
     if(gpa > 4){
       gpa = 4.0;
     } else if (gpa < 0){
       gpa = 0.0;
     }
+    // Round the engagement scores
     engagement = Math.round(e * 100) /100;
+
     data.push([engagement, gpa]);
   }
 
   return data;
 };
 
+/**
+ * Get the color for a graph set
+ *
+ * @method     getColor
+ * @param      number  index of the array
+ * @return     string with RGBA color value for chart
+ */
 exports.getColor = function(index){
   colors = [
     'rgba(26, 143, 32, .7)',

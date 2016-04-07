@@ -4,6 +4,9 @@ module.exports = function() {
   var bcrypt = require('bcrypt');
   var userService = require('../services/user-service');
   
+  /*
+   * Passport Local Strategy for handling user login and storing to MongoDB
+   */
   passport.use(new passportLocal.Strategy({usernameField: 'email'}, function(email, password, next) {
     userService.findUser(email, function(err, user) {
       if (err) {
