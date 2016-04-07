@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col-sm-3">
+    <div ng-include="'/js/app/sidebar.html'"></div>
+  </div>
+
+  <div class="col-sm-9">
+    <div class='well'><h2 class='page-header'>K-Means Clustering</h2></div>
+    <p class='lead'>K-Means Clustering is an algorithm used to group data in a relatively
+    quick and easy way. <span class='text-success'>The implementation here is just to bring
+    in components for the demo and show them connecting.</span></p>
+
+    <div class="alert alert-danger">
+      <h4>DISCLAIMER</h4>
+      <p>
+        K-clustering may not be appropriate for this data. It also produces results which
+        in general are probably too volatile for use in many applications. 
+        <span class="text-primary"><strong>
+        This data is randomly generated each time the api is accessed.</strong></span>
+      </p>
+    </div>
+    
+    <hr />
+
+
+    <form class="form-inline">
+      <div class="form-group">
+        <label for="clusters">Clusters</label>
+        <input type="number" class="form-control" id="clusters" placeholder="4" ng-model="vm.clusters">
+      </div>
+      <div class="form-group">
+        <label for="sampleSize">Sample Size</label>
+        <input type="number" class="form-control" id="sampleSize" placeholder="50" ng-model="vm.sampleSize">
+      </div>
+     
+      <button type="submit" class="btn btn-default" ng-click="vm.updateData()">Run the Simulation</button>
+    </form>
+
+    <div id="simulation" ng-show="vm.processed">
+      <h3>Intial Scatter Plot Data</h3>
+      <p>The data example we&rsquo;re using here is student engagement scores versus current
+      gpa. This data can tend to group into clusters.</p>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Pre-Cluster Scatter Plot</h3>
+        </div>
+        <div class="panel-body">
+            <highchart id="chart1" config="vm.unclusteredConfig"></highchart>
+        </div>
+      </div>
+
+      <h3>Now the work begins...</h3>
+      <p class='lead'>In order to cluster this data we are performing the following actions:</p>
+      <ol>
+        <li>Randomly assign 4 centroids (we can pick any number, K, but for the demo its 4).</li>
+        <li>Measure the distance from every point to every centroid and find the closest for each point.</li>
+        <li>Assign the points closest to each centroid to a cluster.</li>
+        <li>Take the average of all the points in the newly formed cluster.</li>
+        <li>Assign the centroid to the new average center.</li>
+        <li>Start at Step #2 and re-assign the points to clusters.</li>
+        <li>Keep doing this until the centroids no longer move.</li>
+      </ol>
+
+      <div class="alert alert-info" style="margin-bottom: 50px;">
+        <h4>DISCLAIMER 2</h4>
+        <p>
+          The K-clustering done in this app is being done by the <a class='text-primary' href="https://www.npmjs.com/package/k-means">k-means npm library</a>. 
+          This was done because re-inventing a well worn wheel wastes everyone's time.
+        </p>
+      </div>
+
+      <h3>Results</h3>
+      <p>The clusters here may not indicate particular student results. They do however create 
+      cohorts that might be useful given a large enough sample size and relevant metrics.</p>
+
+      <form class="form-inline">
+      <div class="form-group">
+        <label for="clusters">Clusters</label>
+        <input type="number" class="form-control" id="clusters" placeholder="4" ng-model="vm.clusters">
+      </div>
+      <div class="form-group">
+        <label for="sampleSize">Sample Size</label>
+        <input type="number" class="form-control" id="sampleSize" placeholder="50" ng-model="vm.sampleSize">
+      </div>
+     
+      <button type="submit" class="btn btn-default" ng-click="vm.updateData()">Run Again</button>
+    </form>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Clustered Plot</h3>
+        </div>
+        <div class="panel-body">
+            <highchart id="chart2" config="vm.clusteredConfig"></highchart>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
